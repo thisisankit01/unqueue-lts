@@ -60,20 +60,6 @@ export async function sendLoggedInUserData(peopleInQueue: object[]) {
   // });
 }
 
-export const addUserToFirestore = () => {
-  addDoc(collection(db, "admin"), {
-    "Food Chains": {
-      name: "mcd",
-      location: "Delhi",
-    },
-    Hospital: {
-      name: "aims",
-      location: "Delhi",
-    },
-  });
-  console.log("data added to db - admin ");
-};
-
 export async function checkQueueOfExistingUser(setPeopleInQueue) {
   onAuthStateChanged(auth, async (user) => {
     const querySnapshot = await getDocs(collection(db, user.uid));

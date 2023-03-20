@@ -5,6 +5,7 @@ import PeopleInQueue from "./PeopleInQueue";
 import { auth } from "../data/auth";
 import { onAuthStateChanged } from "@firebase/auth";
 import { fetchData } from "../data/data";
+import { getDataFromRealtimeDB } from "../data/dataFromRealtimeDB";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -21,7 +22,8 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetchData(setDataFromAPI);
+    // fetchData(setDataFromAPI);
+    getDataFromRealtimeDB(setDataFromAPI);
   }, []);
 
   return (

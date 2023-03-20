@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ButtonCTA from "./ButtonCTA";
 import Heading from "./Heading";
 import InputField from "./InputField";
 import { handleChange } from "../utils/helper";
 import { signUpUserWithEmailPass } from "../data/auth";
-
-import { addUserToFirestore } from "../data/data";
+import { writeAdminData } from "../data/sendDataAdmin";
+import { useSelector } from "react-redux";
+import { RootState } from "../utils/store";
 
 export default function AdminRegistration() {
   const [adminForm, setAdminForm] = useState({
@@ -15,9 +16,41 @@ export default function AdminRegistration() {
     password: "",
     ConfirmPassword: "",
   });
-  // const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
+  const [lat, setLat] = useState(null);
+  const [lon, setLon] = useState(null);
+  const [address, setAddress] = useState("");
+  const domainName = useSelector((state: RootState) => state.app.domainName);
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLat(position.coords.latitude);
+    setLon(position.coords.longitude);
+  });
+
+  useEffect(() => {
+    console.log("useEffect");
+    cityName();
+    console.log(address);
+  }, [adminForm]);
+
+  function cityName() {
+    if (lat && lon) {
+      fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            data.address.hamlet;
+          setAddress(address);
+          return console.log(address);
+        })
+        .catch((error) => console.log(error));
+    }
+  }
 
   return (
     <div className="flex flex-col items-center p-10">
@@ -28,11 +61,9 @@ export default function AdminRegistration() {
         action=""
         onSubmit={() => {
           if (adminForm.password === adminForm.ConfirmPassword) {
+            // writeUserData();
+            writeAdminData(adminForm.orgName, address, domainName);
             signUpUserWithEmailPass(adminForm.email, adminForm.password);
-
-            //send admin data to db
-            // addUserToFirestore();
-
             navigate("/login");
           } else {
             // Show an error message or alert to the user
