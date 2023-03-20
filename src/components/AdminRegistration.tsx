@@ -27,12 +27,6 @@ export default function AdminRegistration() {
     setLon(position.coords.longitude);
   });
 
-  useEffect(() => {
-    console.log("useEffect");
-    cityName();
-    console.log(address);
-  }, [adminForm]);
-
   function cityName() {
     if (lat && lon) {
       fetch(
@@ -45,12 +39,16 @@ export default function AdminRegistration() {
             data.address.town ||
             data.address.village ||
             data.address.hamlet;
-          setAddress(address);
-          return console.log(address);
+          return setAddress(city);
         })
         .catch((error) => console.log(error));
     }
   }
+
+  useEffect(() => {
+    cityName();
+    console.log(address);
+  }, [adminForm]);
 
   return (
     <div className="flex flex-col items-center p-10">
