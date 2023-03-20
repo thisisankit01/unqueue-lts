@@ -6,7 +6,6 @@ import ButtonCTA from "./ButtonCTA";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../data/auth";
-import { checkQueueOfExistingUser } from "../data/data";
 import { useOutletContext } from "react-router-dom";
 
 export default function LoginPage() {

@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DOMAIN_DATA } from "../data";
 import Heading from "./Heading";
 import { Link } from "react-router-dom";
 import { addDomainName } from "../utils/domainSlice";
+import { RootState } from "../utils/store";
 
 export default function Domains() {
   const dispatch = useDispatch();
 
   function addDomainNameToStore(domainName: string) {
     dispatch(addDomainName(domainName));
+    window.localStorage.setItem("domainName", domainName);
   }
+  const domainName = useSelector((state: RootState) => state.app.domainName);
+
+  useEffect(() => {
+    localStorage.removeItem("domainName");
+  }, []);
 
   return (
     <>
@@ -19,7 +26,7 @@ export default function Domains() {
         {DOMAIN_DATA.map((domain, index) => {
           return (
             <Link
-              onClick={() => addDomainNameToStore(domain.code)}
+              onClick={() => addDomainNameToStore(domain.name)}
               to="/admin"
               key={index}
               className="flex flex-col py-4 bg-gray-50 border border-gray-300 m-4 p-4 rounded-md w-60 h-56 hover:shadow-lg "

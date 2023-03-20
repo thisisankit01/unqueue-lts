@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../images/logo unqueue.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logOut } from "../data/auth";
 import { useDispatch } from "react-redux";
 import { removeDomainName } from "../utils/domainSlice";
+import { writePeopleInQueueData } from "../data/sendPeopleInQueueData";
 
 export default function Navbar({ peopleInQueue }) {
   const currentRoute = useLocation();
@@ -13,6 +14,7 @@ export default function Navbar({ peopleInQueue }) {
   function removeDomainNameFromStore() {
     dispatch(removeDomainName());
   }
+
   return (
     <nav className="flex justify-between p-3 border border-b-gray-200">
       <Link to="/domains" className="flex">
@@ -24,6 +26,9 @@ export default function Navbar({ peopleInQueue }) {
         <a
           onClick={async () => {
             removeDomainNameFromStore();
+            localStorage.removeItem("domainName");
+            // people in q send to db
+            // writePeopleInQueueData(domainName, location, "AIMS", peopleInQueue);
             const isLoggedOut = logOut();
             if (isLoggedOut) {
               navigate("/login");

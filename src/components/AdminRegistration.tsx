@@ -6,8 +6,7 @@ import InputField from "./InputField";
 import { handleChange } from "../utils/helper";
 import { signUpUserWithEmailPass } from "../data/auth";
 import { writeAdminData } from "../data/sendDataAdmin";
-import { useSelector } from "react-redux";
-import { RootState } from "../utils/store";
+import { domainName } from "../utils/constants";
 
 export default function AdminRegistration() {
   const [adminForm, setAdminForm] = useState({
@@ -17,10 +16,10 @@ export default function AdminRegistration() {
     ConfirmPassword: "",
   });
   const navigate = useNavigate();
+
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [address, setAddress] = useState("");
-  const domainName = useSelector((state: RootState) => state.app.domainName);
 
   navigator.geolocation.getCurrentPosition((position) => {
     setLat(position.coords.latitude);

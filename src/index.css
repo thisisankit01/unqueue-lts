@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: "Monsterrat";
-  }
+* {
+  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .input-color {
